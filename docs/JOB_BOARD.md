@@ -1,4 +1,4 @@
-# AXON JOB BOARD (live hand-over; keep current; updated 2026-10-18 by the Director)
+# AXON JOB BOARD (live hand-over; keep current; updated 2026-10-20 by the Director)
 
 Read after `docs/ROADMAP.md`. This file is volatile: update it after EVERY decision, inspection and merge, and give the owner the updated lines (roadmap 5.5). Status words: NOT SENT, SENT, RETURNED, INSPECTED-OK, INSPECTED-FIX, MERGED. All jobs are NOT SENT unless a line in the STATUS LOG says otherwise.
 
@@ -16,8 +16,8 @@ C07 image editor zoom, pan, tap-for-full-picture: RETURNED 2026-10-19 and ACCEPT
 
 WAVE 2, ChatGPT, after the jobs they need are MERGED:
 C08 code formatter engine: RETURNED 2026-10-19 and ACCEPTED for merge (package C08-merge.zip). Known cosmetic nits, not defects: CSS pretty does not add a missing last semicolon, and an empty declaration (`;;`) or a braced custom-property value prints a stray `;` on its own line; XML pretty adds whitespace between elements (stated limit). JS and TS are refused by design.
-C09 engine registry, legacy descriptors, File Compare catalog entry, truth test. Needs C01 to C06 and C11 (adapts to what exists).
-C10 Converter wiring for Data formats, Text formats, Image (engine side only). Needs C02 (so C13), C03, C04, C06.
+C09 engine registry, legacy descriptors, File Compare catalog entry, truth test. PRESENT in the 2026-10-20 export (registerEngineTools.ts, docs/reports/C09_REPORT.md); no Director inspection is recorded on this board.
+C10 Converter wiring for Data formats, Text formats, Image (engine side only). PRESENT in the 2026-10-20 export (converter kinds data-formats, text-formats, image; docs/reports/C10_REPORT.md); no Director inspection recorded.
 
 AI STUDIO, screens only, each in a NEW session that imports the repository after the listed jobs are merged:
 A01 screen kit and Calculator, Case Converter, Find and Replace. No ChatGPT dependency. START HERE: it sets the look of every tool screen; the owner approves it in the preview.
@@ -28,6 +28,22 @@ A05 Loan Calculator, Split and Tip, Pattern Tester, JSON and Data Viewer. Needs 
 A06 QR Code Maker, File Compare, File Inspector, Zip and Unzip. Needs A01, C04, C05, C06, C09.
 A07 Converter new kinds (Data formats, Text formats, Image). Needs A01, C10 (and so C02, C03, C04, C06).
 A08 Code Formatter screen. Needs A01, C08.
+STATE of A01 to A08 (MEASURED in the 2026-10-20 export): 25 tool screens exist in src/components/toolScreens and are open in the catalog (31 of 62 menu entries open). The Converter draws the three new kinds, but the three old menu entries data-converter, text-format-converter and image-converter are STILL LISTED (A10 retires them). No Director inspection of these screens is recorded; the owner approved the look in the preview. Phone tests of them: NOT CONFIRMED.
+
+REMAINING TOOLS (owner order 2026-10-20: finish every tool, then the brain, then AXON Code, then the closing cleanup). All NOT SENT:
+A09 Image editor view fix (prompt A09_FOR_AISTUDIO_IMAGE_EDITOR_VIEW_FIX.md): picture hangs in the top-left corner, tap-for-full does nothing in Adjust and Filters, pinch does nothing (OWNER-REPORTED on the phone). SECOND round on this area: measure first (Two-Strike). Send FIRST, in parallel with the C jobs. Needs the repository after the C07 merge.
+C16 Summarizer (extractive) and Document Reader engines (C16_FOR_CHATGPT_SUMMARIZER_AND_DOCUMENT_READER.md). No dependency.
+C17 File Converter and Batch Convert planners (C17_FOR_CHATGPT_FILE_CONVERTER_AND_BATCH_PLANNERS.md). Needs C10 and C15 (both present).
+C18 My Dictionary (UD1) engine (C18_FOR_CHATGPT_MY_DICTIONARY_ENGINE.md). Creates files only; does not touch the brain or the English dictionary.
+A10 File Converter and Batch Convert screens, and retire the three converter entries (A10_FOR_AISTUDIO_FILE_CONVERTER_AND_BATCH_SCREENS.md). Needs C17 merged.
+A11 Summarizer and Document Reader screens (A11_FOR_AISTUDIO_SUMMARIZER_AND_DOCUMENT_READER_SCREENS.md). Needs C16 merged.
+A12 My Dictionary screen (A12_FOR_AISTUDIO_MY_DICTIONARY_SCREEN.md). Needs C18 merged.
+Order: A09 + C16 + C17 + C18 at the same time (A09 is AI Studio, the others ChatGPT, each its own chat); then A10, A11, A12 one at a time (each edits toolCatalog.ts); then ONE cloud build (type check, tests, APK) and phone tests; then the brain.
+Still waiting for the owner: Backup and Restore and the Source hub S3 (no prompt yet); new capability ideas (`docs/CAPABILITY_IDEAS.md`).
+
+BRAIN (after the tools; plan in docs/BRAIN_PLAN.md): B03A prompt WRITTEN (B03A_FOR_CHATGPT_MEANING_STAGE_PART_A.md, with its 46-message corpus). B03B and every later brain job are written only after the one below them is accepted (Rule 3).
+AXON CODE: plan in docs/AXON_CODE_PLAN.md; no prompts yet (the parser choice needs a measurement first).
+CLOSING CLEANUP: stage Z, roadmap section 11; running list in docs/CLEANUP_CANDIDATES.md.
 
 After these: write and run prompts for File Converter, Batch Convert, Summarizer (extractive), Document Reader, My Dictionary (UD1); refresh this board and the roadmap; one cloud build (type check, tests, APK); phone tests; then the brain from scratch (roadmap section 7, B3 onward: first write the B3 prompt with its positive and negative corpus).
 
@@ -45,11 +61,20 @@ C09: src/tools/engines/legacyDescriptors.ts,src/capabilities/registerEngineTools
 C10: src/tools/converter/**,tests/convertBlocks.test.ts,tests/toolsConverter.test.ts,docs/reports/C10_REPORT.md
 A01 to A08 (screens): src/components/toolScreens/**,src/components/tools/**,src/tools/screens/**,src/tools/toolCatalog.ts,src/App.tsx,src/components/AxonToolsScreen.tsx,src/components/ConverterScreen.tsx,src/components/converter/**,src/state/** (judge each job by its own LANE section; the AI Studio export is a WHOLE project, so use --make-delta and review only in-lane files)
 
+C16: src/tools/engines/text/summarize.ts,src/tools/engines/files/documentRead.ts,tests/summarize.test.ts,tests/documentRead.test.ts,docs/reports/C16_REPORT.md
+C17: src/tools/engines/files/fileConvertPlan.ts,src/tools/engines/files/batchPlan.ts,tests/fileConvertPlan.test.ts,tests/batchPlan.test.ts,docs/reports/C17_REPORT.md
+C18: src/tools/engines/dictionary/**,tests/userDictionary.test.ts,tests/userDictionaryImport.test.ts,tests/userDictionaryBackend.test.ts,docs/reports/C18_REPORT.md
+B03A: src/brain/mind/meaning/**,src/brain/mind/types.ts,src/brain/mind/stages.ts,src/brain/mind/index.ts,tests/meaningA.test.ts,tests/meaningNoPhrases.test.ts,tests/fixtures/meaning-corpus-a.json,docs/reports/B03A_REPORT.md
+A09: src/components/editors/ZoomStage.tsx,src/components/editors/ImageEditorScreen.tsx (CropOverlay.tsx and MediaStrip.tsx only if the layout needs it); FORBIDDEN src/tools/imageEdit/**
+A10: src/components/toolScreens/FileConverterScreen.tsx,src/components/toolScreens/BatchConvertScreen.tsx,src/components/converter/runConversion.ts,src/components/ConverterScreen.tsx (minimal),src/tools/toolCatalog.ts (flips and removals only)
+A11: src/components/toolScreens/SummarizerScreen.tsx,src/components/toolScreens/DocumentReaderScreen.tsx,src/tools/toolCatalog.ts (two flips only)
+A12: src/components/toolScreens/MyDictionaryScreen.tsx,src/services/userDictionaryStorage.ts,src/tools/toolCatalog.ts (one flip only)
+
 ## 3. After each AI Studio merge the Director must (tests do not block the cloud build, so do this by hand)
 Update `tests/tools.test.ts` (the sorted list of available tool ids near line 103, the tool counts, any group counts) and `tests/capabilityTruth.test.ts` for exactly the catalog flips or removals of that job, run both with tsx, and say what changed. A merge package for a screen job = the in-lane delta plus these two test files.
 
-## 4. Tool by tool (menu entries today: 61)
-Open today (5): Text Counter, Interface Capture, Background Proof, Unit and Base Converter, Dictionary.
+## 4. Tool by tool (menu entries today: 62; 31 open, 31 coming soon; MEASURED 2026-10-20). The older lists below are the 2026-10-18 plan: read them with the REMAINING TOOLS block of section 1.
+Open on 2026-10-18 (5): Text Counter, Interface Capture, Background Proof, Unit and Base Converter, Dictionary.
 Engine exists, screen to build (16): Calculator, Case Converter, Find and Replace (A01); Text Cleaner, Sort Lines, Text Compare, Percentage Helper, Number to Words, Date Calculator (A02); Password Generator, Random Picker, Encoder and Decoder, Hash and Checksum (A03); Timer, Stopwatch, Tally Counter (A04, needs C01 tool store).
 New (13): Loan Calculator, Split and Tip, Pattern Tester, JSON and Data Viewer (C01, C02, A05); Device Profile (C01, A04); QR Code Maker, File Compare, File Inspector, Zip and Unzip (C04 to C06, C09, A06); Code Formatter (C08, A08); Data formats, Text formats, Image converter (C02, C03, C04, C06, C10, A07; they retire the entries data-converter, text-format-converter, image-converter).
 Later, no internet or model needed (5): File Converter, Batch Convert, Summarizer (extractive), Document Reader, My Dictionary.
@@ -57,6 +82,7 @@ Not possible honestly yet or waiting for the owner (12): Web Search, Link Analyz
 LEFT OUT by the owner (11): Market Scope, Audio Converter, Text to Speech, Voice Library, Voice Cloner, Speech to Text, Video Converter, Video Maker, Video Downloader, Collage Maker, Picture to Table or Code. (Also the audio and video editors.)
 
 ## 5. STATUS LOG (newest first; add a line after every step)
+2026-10-20 (evening): the owner gave roadmap v16.5 and the 2026-10-20 source export and reported three Image editor faults on the phone. Director MEASURED the export (31 of 62 menu entries open; 25 tool screens; C09 and C10 present; converter kinds present; three old converter entries still listed) and read the zoom code: ZoomStage places a pixel-sized picture box at left 0, top 0 and only moves it once the stage has a valid measured size, so a wrong or zero measurement leaves the picture unscaled in the top-left corner; the stage sits in a chain of percentage heights inside flex boxes; Adjust and Filters swap in a preview canvas. These are HYPOTHESES: job A09 measures first. Wrote roadmap v16.7, prompts A09, C16, C17, C18, A10, A11, A12, B03A (with a 46-message corpus), docs BRAIN_PLAN, AXON_CODE_PLAN, CAPABILITY_IDEAS, CLEANUP_CANDIDATES. Owner order recorded: finish every tool, then brain, then AXON Code, then closing cleanup. NOT RUN: nothing here was built or run; no code was changed. NEXT: owner sends A09, C16, C17, C18 (new chats), brings the returns back for inspection.
 2026-10-20: C15 (JSON view model, CSV/TSV, zip tool in one job) RETURNED and INSPECTED-FIX. ChatGPT delivered all three engines but could run nothing. Director findings: zip test failed on first real run (automatic folder entries); a real SECURITY flaw (loadAsync with checkCRC32 inflates every entry up front, defeating all caps); encrypted archives could not even be listed; jsonView used about 130 bytes of heap per input byte. All fixed or mitigated by the Director with new tests (jsonView 16, csv 610, zipTool 39 checks, strict tsc passes); csv matches Python's csv module. Package C15-merge.zip. Owner adds three lines to test:kernel (jsonView, csv, zipTool). NEXT: C09 and C10 can now be sent with a fresh BASE.zip downloaded after C11, C15 and this merge.
 2026-10-20: C11 RETURNED and INSPECTED-FIX (small). verify_return.py: 7 new files, in lane, no placeholders, 3 new tests pass, other 30 unchanged, strict tsc passes. Own checks: 11 real-looking user agents including an Infinix WebView agent parse correctly; empty or odd environments never produce a guessed value; the pattern tester handles sticky, lookbehind, $& replacement, zero-width matches, unicode properties, exactly 5000 matches. Defect found: a corrupt store could not be repaired; fixed and tested (67 checks). Package C11-merge.zip. Owner adds `tsx tests/patternTest.test.ts`, `tsx tests/deviceProfile.test.ts`, `tsx tests/toolStore.test.ts` to test:kernel. C09 now waits only for C12 and C14 (so it registers JSON view and zip in the same pass); C12 and C14 prompts are written. Note: the pattern tester runs unbounded in the engine; the screen MUST use runWithTimeout with a Worker (A05 says so).
 2026-10-19: C08 RETURNED and INSPECTED-OK. verify_return.py: 3 new files, in lane, no placeholders, its test passes, the other 30 test commands unchanged, strict tsc passes. Independent checks (new tests/codeFormatAdversarial.test.ts, all pass): CSS minify keeps calc() spaces, selector and value spaces, `and (`, strings with braces and semicolons, url(), !important; HTML pre, textarea, script and style stay byte-exact, attributes containing > survive; XML CDATA, declaration and mixed content kept; JSON equals the platform's JSON over 400 random documents at 3 indents with exact number text; 300 random CSS documents are idempotent and minify(pretty)=minify; errors carry line numbers; junk never throws. Package C08-merge.zip (3 C08 files, the adversarial test, this board). Owner adds `tsx tests/codeFormat.test.ts` and `tsx tests/codeFormatAdversarial.test.ts` to test:kernel. Next: A08 screen can start once A01 is merged; C09 and C10 still wait for C11 to C14.
